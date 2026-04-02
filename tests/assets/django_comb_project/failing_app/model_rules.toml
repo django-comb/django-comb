@@ -1,0 +1,33 @@
+# We put these rules in a different app so we can conditionally turn it
+# on via the Django configuration.
+
+[rule.blue-green]
+type = "no_inbound_foreign_keys"
+models = [
+    "some_app.Blue",
+    "some_app.Green",
+]
+allowed = [
+    "some_app.Yellow"
+]
+silenced_violations = [
+    "another_app.Purple"
+]
+
+[rule.blue-green-wildcards]
+type = "no_inbound_foreign_keys"
+models = [
+    "some_app.*",
+]
+allowed = [
+    "some_app.*",
+]
+silenced_violations = [
+    "*.Orange"
+]
+
+[rule.blue-green-no-arrays]
+type = "no_inbound_foreign_keys"
+models = "some_app.*"
+allowed = "some_app.*"
+silenced_violations = "*.Orange"

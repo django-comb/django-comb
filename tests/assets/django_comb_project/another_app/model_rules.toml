@@ -1,0 +1,13 @@
+[rule.all]
+type = "no_inbound_foreign_keys"
+models = ["some_app.*"]
+allowed = [
+    "some_app.*",
+    "another_app.Pur*",  # Matches another_app.Purple.
+]
+silenced_violations = [
+    "another_*.Orange",
+]
+# Unexpected keys.
+extra_key_one = "foo"
+extra_key_two = "bar"

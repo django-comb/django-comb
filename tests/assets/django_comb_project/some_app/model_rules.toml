@@ -1,0 +1,3 @@
+[rule.some-app-yellow]
+type = "no_inbound_foreign_keys"
+models = ["some_app.Yellow"]

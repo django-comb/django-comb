@@ -1,0 +1,6 @@
+# This file is invalid TOML, because of the duplicated table.
+[rule.duplicate-id]
+key = "value"
+
+[rule.duplicate-id]
+key = "value"

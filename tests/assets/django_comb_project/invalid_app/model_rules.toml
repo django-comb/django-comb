@@ -1,0 +1,52 @@
+[rule.missing-type]
+models = [
+    "some_app.Blue",
+    "some_app.Green",
+]
+
+[rule.nonexistent-type]
+type = "nonexistent"
+models = [
+    "some_app.Blue",
+    "some_app.Green",
+]
+allowed = [
+    "some_app.Yellow"
+]
+silenced_violations = [
+    "another_app.Purple"
+]
+
+[rule.missing-required-field]
+type = "no_inbound_foreign_keys"
+
+[rule.nonexistent-apps]
+type = "no_inbound_foreign_keys"
+models = [
+    "nonexistent_app.Violet",
+    "another_app.Purple",
+]
+allowed = [
+    "nonexistent_app.Indigo",
+]
+silenced_violations = [
+    "nonexistent_app.Pink",
+]
+
+[rule.nonexistent-models]
+type = "no_inbound_foreign_keys"
+models = [
+    "some_app.NonExistentModelOne",
+    "some_app.Blue",
+]
+allowed = [
+    "some_app.NonExistentModelTwo"
+]
+silenced_violations = [
+    "some_app.NonExistentModelThree"
+]
+
+[rule.model-expression-wrong-type]
+type = "no_inbound_foreign_keys"
+models = true
+allowed = ["some*", 3]
