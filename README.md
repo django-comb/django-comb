@@ -1,7 +1,11 @@
 # Django Comb
 
 Django Comb is a command-line tool aimed at untangling Django Models.
-Prevents other models from defining a `ForeignKey`, `OneToOneField` or `ManyToManyField` into a set of models.
+
+It provides a `lint_models` management command. This is a linter, allowing developers to define rules about their models.
+
+Currently, the only rule is the `no-inbound-foreign-keys` rule, which prevents other models from defining `ForeignKey`,
+`OneToOneField` or `ManyToManyField` into a given model.
 
 ## Usage
 
