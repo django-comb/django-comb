@@ -1,0 +1,115 @@
+# Django Comb
+
+Django Comb is a command-line tool aimed at untangling Django Models.
+Prevents other models from defining a `ForeignKey`, `OneToOneField` or `ManyToManyField` into a set of models.
+
+## Usage
+
+### 1. Install `django_comb`
+
+Ensure `django_comb` is on the Python path and add it to `INSTALLED_APPS`:
+
+```python
+# myproject/settings.py
+
+INSTALLED_APPS = [
+   "django_comb",
+   ...
+]
+```
+
+###  2. Define rules
+
+- Choose an _installed_ Django app to place your rules. (It doesn't matter functionally, but usually you will want to
+  use the app that contains the models you are protecting.)
+- Create a `model_rules.toml` in the directory in that app, alongside the app's `models.py`.
+- Add one or more rule definitions, in the form `[rule.my-rule-id]`. The second part of the TOML key (after the `.`)
+  is your rule's unique id. See [Supported Rules](#supported-rules) for examples.
+
+### 3. Run the linter
+
+Run the `lint_models` management command:
+
+```text
+python manage.py lint_models
+```
+
+## Supported rules
+
+### No inbound foreign keys
+
+Prevents other models from defining a `ForeignKey`, `OneToOneField` or `ManyToManyField` into a set of models.
+
+| TOML Key              | Type                                  | Description                                                                                                                                                    |
+|-----------------------|---------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `type`                | String                                | The rule type, must be `"no_inbound_foreign_keys"`.                                                                                                            |
+| `models`              | String or Array of Strings            | The models to protect against inbound foreign keys pointing to them from other models, in the form  `app_label.ModelName`. Supports Unix shell-style wildcards. |
+| `allowed`   | String or Array of Strings (optional) | Models that are allowed to point to `models`, in the form `app_label.ModelName`. Supports Unix shell-style wildcards.                                          |
+| `silenced_violations` | String or Array of Strings (optional) | Functionally identical to `allowed`, but indicates undesirable dependencies. Supports Unix shell-style wildcards.                                    |
+
+#### Example
+
+```toml
+# path/to/some_app/model_rules.toml
+
+[rule.no-fks-to-blue-or-green]
+type = "no_inbound_foreign_keys"
+models = "some_app.*"  # All models in some_app.
+allowed = [
+    # It's okay for these models to have a foreign key
+    # to the models above.
+    "some_app.*",
+    "another_app.Orange",
+]
+# Models listed here also point to the models above, but they shouldn't.
+# Including them here suppresses violations in the same way as
+# `allowed`, but indicates that the violation is technical debt
+# rather than intentional design.
+silenced_violations = "another_app.Purple"
+```
+
+# Exit codes
+
+`lint_models` exits with the following status codes:
+
+- `0` if no violations were found.
+- `1` if violations were found.
+- `2` if it terminates abnormally, e.g. due to invalid configuration.
+
+
+## The `get_model_rules` command
+
+To view the discovered model rules as JSON, run the `get_model_rules` management command:
+
+```text
+$ python manage.py get_model_rules
+[
+  {
+    "id": "all",
+    "app_label": "another_app",
+    "type": "no_inbound_foreign_keys",
+    "models": [
+      "some_app.*"
+    ],
+    "allowed": [
+      "some_app.*",
+      "another_app.Pur*"
+    ],
+    "silenced_violations": [
+      "another_*.Orange"
+    ],
+    "extra_key_one": "foo",
+    "extra_key_two": "bar"
+  },
+  {
+    "id": "some-app-yellow",
+    "app_label": "some_app",
+    "type": "no_inbound_foreign_keys",
+    "models": [
+      "some_app.Yellow"
+    ]
+  }
+]
+```
+
+This can be useful for building secondary tooling that tracks, say, the number of `silenced_violations` over time.
