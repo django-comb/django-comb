@@ -40,13 +40,9 @@ autofix:
     @just format
     @uv run ruff check --fix
 
-# Build docs.
-build-docs:
-    @uv run --group=docs mkdocs build --site-dir dist/docs
-
 # Serve docs in a browser.
 serve-docs:
-    @uv run --group=docs mkdocs serve --open
+    @uv run zensical serve
 
 # Run all linters, build docs and tests.
 check:
