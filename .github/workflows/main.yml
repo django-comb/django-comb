@@ -5,7 +5,6 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -28,7 +27,7 @@ jobs:
         run: just test-all
 
   lint:
-    name: Lint under 3.14
+    name: Lint and build docs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -43,3 +42,6 @@ jobs:
 
       - name: Lint
         run: just lint
+
+      - name: Build docs
+        run: just build-docs
