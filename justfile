@@ -44,13 +44,8 @@ autofix:
 serve-docs:
     @uv run zensical serve
 
-# Run all linters, build docs and tests.
-check:
-    @UV_PYTHON=3.10 just lint  # See .github/workflows/main.yml for why.
-    @just lint
-    @just build-docs
-    @just test-all
-    @echo '👍 {{GREEN}} Linting, docs and tests all good.{{NORMAL}}'
+build-docs:
+    @uv run zensical build --strict
 
 # Upgrade Python code to the supplied version. (E.g. just upgrade 310)
 upgrade-python MIN_VERSION:
