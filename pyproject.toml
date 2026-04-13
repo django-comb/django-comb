@@ -28,6 +28,10 @@ classifiers = [
     "Topic :: Utilities",
 ]
 
+[project.urls]
+Documentation = "https://django-comb.readthedocs.io"
+Source-code = "https://github.com/django-comb/django-comb"
+
 [build-system]
 requires = ["uv_build>=0.10.0,<0.11.0"]
 build-backend = "uv_build"
