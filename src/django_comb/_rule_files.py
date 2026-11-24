@@ -269,7 +269,10 @@ def _make_pydantic_error(
 
 
 DjangoModelSetPydanticField = Annotated[
-    _rules.DjangoModelSet, pydantic.BeforeValidator(_model_expressions_to_model_classes)
+    _rules.DjangoModelSet,
+    pydantic.BeforeValidator(
+        _model_expressions_to_model_classes, json_schema_input_type=str | list[str]
+    ),
 ]
 
 

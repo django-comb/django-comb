@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/django-comb/django-comb/main/src/django_comb/model_rules.schema.json",
+  "title": "Django Comb model rules",
+  "description": "Generated from Django Comb's Pydantic rule configurations. Model expression matching and relationship checks require Django Comb.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "rule": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "description": "The config in the TOML file corresponding to a NoInboundForeignKeysRule.\n\nThis is a separate class from the Rule class as the schema is slightly different.\nIts role is to validate the TOML and turn it into the Rule.",
+            "properties": {
+              "models": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                ],
+                "title": "Models"
+              },
+              "allowed": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                ],
+                "default": [],
+                "title": "Allowed"
+              },
+              "silenced_violations": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                ],
+                "default": [],
+                "title": "Silenced Violations"
+              },
+              "type": {
+                "const": "no_inbound_foreign_keys"
+              }
+            },
+            "required": [
+              "models",
+              "type"
+            ],
+            "title": "NoInboundForeignKeysRuleConfig",
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  }
+}

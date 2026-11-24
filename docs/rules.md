@@ -61,3 +61,22 @@ allowed = [
 # rather than intentional design.
 silenced_violations = "another_app.Purple"
 ```
+
+## Editor validation
+
+Django Comb ships a [JSON Schema][model-rules-schema] for `model_rules.toml`.
+Editors and TOML tools that support schema pragmas, such as Taplo and Tombi,
+can use it for completion and validation. Add this comment at the top of a rule file:
+
+```toml
+#:schema https://raw.githubusercontent.com/django-comb/django-comb/main/src/django_comb/model_rules.schema.json
+```
+
+The schema checks rule types, required fields and value types, and rejects unknown keys.
+Django Comb itself warns about unknown rule keys rather than rejecting them. Empty rule files and
+empty expression arrays are supported.
+
+The schema cannot check whether expressions match installed Django models or whether relationships
+break a rule. Run `lint_models` for those checks.
+
+[model-rules-schema]: https://raw.githubusercontent.com/django-comb/django-comb/main/src/django_comb/model_rules.schema.json

@@ -110,3 +110,15 @@ just serve-docs
 9. `git tag v{new version number}`
 10. `git push --tags`
 11. This should kick start the Github `release` workflow which releases the project to PyPI.
+
+## Updating the model rules schema
+
+The published JSON Schema is generated from the Pydantic rule configuration models.
+After changing these models or adding a rule type, regenerate it with:
+
+```console
+uv run python scripts/generate_model_rules_schema.py
+```
+
+The test suite checks that the published schema matches the generator. Custom validators
+that transform input should specify their JSON Schema input type.
